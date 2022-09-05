@@ -20,7 +20,7 @@ public class ballGame {
         //}
 
         int bb = 1000 * a[0] + 100 * a[1] + 10 * a[2] + a[3];
-        System.out.println("랜덤: " + bb);
+        //System.out.println("랜덤: " + bb);
         //int s =bb-1;
         //System.out.println("bb-1="+s); //난수=정수
         return a;
@@ -33,7 +33,7 @@ public class ballGame {
         b[1] = (x % 1000) / 100;
         b[2] = (x % 1000 % 100) / 10;
         b[3] = x % 1000 % 100 % 10;
-        System.out.println("입력한 수: " + b[0] + b[1] + b[2] + b[3]);
+        //System.out.println("입력한 수: " + b[0] + b[1] + b[2] + b[3]);
         return b;
     }
 
