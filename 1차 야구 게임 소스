@@ -1,0 +1,51 @@
+import java.util.Random;
+import java.util.Scanner;
+
+public class ballGame {
+    public static int[] computer() {
+        int[] a = new int[4];
+
+        for (int i = 0; i < 4; i++) {
+
+            Random r = new Random();
+            a[i] = r.nextInt(10);
+            for (int j = 0; j < i; j++) {
+                if (a[i] == a[j]) {
+                    i--;
+                }
+            }
+        }
+        //for (int b=0; b<4; b++){
+        //  System.out.print(a[b]);
+        //}
+
+        int bb = 1000 * a[0] + 100 * a[1] + 10 * a[2] + a[3];
+        System.out.println("랜덤: " + bb);
+        //int s =bb-1;
+        //System.out.println("bb-1="+s); //난수=정수
+        return a;
+    }
+
+    public static int[] player(int x) {
+        int[] b = new int[4];
+        // int x=5684;
+        b[0] = x / 1000;
+        b[1] = (x % 1000) / 100;
+        b[2] = (x % 1000 % 100) / 10;
+        b[3] = x % 1000 % 100 % 10;
+        System.out.println("입력한 수: " + b[0] + b[1] + b[2] + b[3]);
+        return b;
+    }
+    
+    public static void main (String[] arg) {
+        System.out.println("Do you want to play the baseball??");
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("시스템이 숫자를 선택하는 중입니다....");
+        int[] CNumber = computer();
+        System.out.println("임의의 숫자가 결정됐습니다.");
+        System.out.print("0~9 중 숫자를 골라 네자리를 입력해주세요(중복x) \n>>");
+        int run = sc.nextInt();
+        int[] PNumber = player(run);
+    }
+}
