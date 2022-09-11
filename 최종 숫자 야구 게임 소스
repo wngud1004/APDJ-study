@@ -13,6 +13,7 @@ public class NumberBallGame extends JPanel implements ActionListener, ChangeList
     int[] PN = new int[4];
     int num = 35, count = 0, mynum = 0, gamecount = 1;
     String PNum;
+    boolean flag = true;
 
     public NumberBallGame(){
         JPanel panel;
