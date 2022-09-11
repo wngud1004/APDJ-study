@@ -13,20 +13,19 @@ public class NumberBallGame extends JPanel implements ActionListener, ChangeList
     int[] PN = new int[4];
     int num = 35, count = 0, mynum = 0, gamecount = 1;
     String PNum;
-    boolean flag = true;
+    boolean flag = false;
 
     public NumberBallGame(){
+        // NumberBallGame 생성자
         JPanel panel;
         pane = new JTabbedPane();
         setLayout(new BorderLayout());
         String helpMessage ="\n\t랜덤으로 0~9까지의 숫자 중 중복되지 않는 4자리 숫자를 정하고
         \n\t그 숫자가 무엇인지 찾는 게임이다.
         \n\n\t플레이어가 임의의 4자리 숫자를 선택하면 랜덤숫자와 비교하여
-        \n\t숫자와 자리가 같다면 strike 숫자면 같다면 ball
-        \n\t둘다 같지 않다면 out이 나온다. ";
+        \n\t숫자와 자리가 같다면 strike 숫자면 같다면 ball \n\t둘다 같지 않다면 out이 나온다. ";
         computer();
 
-        //게임 플레이 공간
         panel = new JPanel();
         panel.add(new Label("숫자 입력 :"));
         panel.add(keyb);
@@ -36,7 +35,6 @@ public class NumberBallGame extends JPanel implements ActionListener, ChangeList
         panel.add(txtStatus);
         pane.addTab("게임",panel);
 
-        //도움말 공간
         panel = new JPanel();
         TextArea help= new TextArea(helpMessage,15,55);
         panel.add(new Label("도움말:"));
@@ -47,7 +45,8 @@ public class NumberBallGame extends JPanel implements ActionListener, ChangeList
         pane.addChangeListener(this);
         add(pane,"Center");
     }
-    //예외 
+
+    //입력예외처리
     static boolean isNumber(String str) {
         boolean result = true;
         for (int i = 0; i < str.length(); i++) {
@@ -62,15 +61,16 @@ public class NumberBallGame extends JPanel implements ActionListener, ChangeList
     // 임의의 수 생성
     public void computer(){
         Random r = new Random();
-
-        for (int i = 0; i < 4; i++) {
-            CN[i] = r.nextInt(10);
-            for (int j = 0; j < i; j++) {
-                if (CN[i] == CN[j]) {
-                    i--;
+        do {
+            for (int i = 0; i < 4; i++) {
+                CN[i] = r.nextInt(10);
+                for (int j = 0; j < i; j++) {
+                    if (CN[i] == CN[j]) {
+                        i--;
+                    }
                 }
             }
-        }
+        }while (CN[0] == 0);
 
         num = 1000 * CN[0] + 100 * CN[1] + 10 * CN[2] + CN[3];
         System.out.println("생성된 임의의 수:"+num);
@@ -86,6 +86,7 @@ public class NumberBallGame extends JPanel implements ActionListener, ChangeList
         } else {
             if (!isNumber(PNum)) {
                 txtStatus.setText(txtStatus.getText() + "<입력하신 " + PNum + "은(는) 옳바른 입력 값이 아닙니다.>\n");
+                flag = true;
             } else {
                 if (PNum.length() == 4) {
                     mynum = Integer.parseInt(PNum);
@@ -127,17 +128,20 @@ public class NumberBallGame extends JPanel implements ActionListener, ChangeList
         int strike = c[1];
         int ball = c[0] - c[1];
         int out = 4 - ball - strike;
+        int sum = strike + ball + out;
 
         System.out.println("strike " + strike + ", ball " + ball + ", out" + out);
-        if(strike == 4){
-            txtStatus.setText(txtStatus.getText()+ "\n★★★★★정답★★★★★\n");
-            txtStatus.setText(txtStatus.getText()+ "게임이 끝났습니다\n" + gamecount + "번만에 정답을 맟추셨습니다!\n");
-            txtStatus.setText(txtStatus.getText()+ "정답은 "+ num +" 입니다.<정답을 다시 입력하면 게임을 다시 시작합니다>\n");
-            count++;
-        } else{
-            txtStatus.setText(txtStatus.getText()+ "\n입력하신" + mynum + "은\n");
-            txtStatus.setText(txtStatus.getText()+"Strike " + strike + "개 "+"Ball " + ball + "개 "+"Out " + out + "개 \n");
-            gamecount++;
+        if(sum == 4) {
+            if (strike == 4) {
+                txtStatus.setText(txtStatus.getText() + "\n★★★★★정답★★★★★\n");
+                txtStatus.setText(txtStatus.getText() + "게임이 끝났습니다\n"+ "[ " + gamecount + " 번] 만에 정답을 맟추셨습니다!\n");
+                txtStatus.setText(txtStatus.getText() + "정답은 " + num + " 입니다.<정답을 다시 입력하면 게임을 다시 시작합니다>\n");
+                count++;
+            } else {
+                txtStatus.setText(txtStatus.getText() + "\n입력하신 " + mynum + " 은\n");
+                txtStatus.setText(txtStatus.getText() + "Strike " + strike + "개 " + "Ball " + ball + "개 " + "Out " + out + "개 \n");
+                gamecount++;
+            }
         }
         if(count == 2){
             computer();
@@ -148,11 +152,13 @@ public class NumberBallGame extends JPanel implements ActionListener, ChangeList
     public Dimension getPreferredSize(){
         return new Dimension(500, 350);
     }
+
     public void stateChanged(ChangeEvent e){
         int curSelIndex = pane.getSelectedIndex();
         String curPaneTitle = pane.getTitleAt(curSelIndex);
         System.out.println("["+curPaneTitle + "]탭이 선택되었습니다");
     }
+
     public void actionPerformed(ActionEvent e) {
         player();
         if(!flag) compare();
