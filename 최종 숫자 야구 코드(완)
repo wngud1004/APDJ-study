@@ -91,7 +91,10 @@ public class NumberBallGame extends JPanel implements ActionListener, ChangeList
                 if (PNum.length() == 4) {
                     mynum = Integer.parseInt(PNum);
                     flag = false;
-                } else txtStatus.setText(txtStatus.getText() + "<입력하신 " + PNum + "은(는) 옳바른 입력 값이 아닙니다.>\n");
+                } else {
+                    txtStatus.setText(txtStatus.getText() + "<입력하신 " + PNum + "은(는) 옳바른 입력 값이 아닙니다.>\n");
+                    flag = true;
+                }
             }
             keyb.setText("");
         }
