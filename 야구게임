@@ -1,0 +1,122 @@
+import java.util.InputMismatchException;
+import java.util.Random;
+import java.util.Scanner;
+
+public class NEW {
+
+    int[] a = new int[4];
+    int[] b = new int[4];
+    int c[] = new int[2];
+    static int score=1;
+    static int strike=0;
+    static Scanner sc = new Scanner(System.in);
+
+                public void computer(){
+                    for (int i = 0; i < 4; i++) {
+                        Random r = new Random();
+                        a[i] = r.nextInt(10);
+                        for (int j = 0; j < i; j++) {
+                            if (a[i] == a[j]) {
+                                i--;
+                            }
+                        }
+                    }
+                    //System.out.print("랜덤: ");
+                    //for (int i=0; i<4; i++){
+                    //System.out.print(a[i]);}
+                    //System.out.println();
+                    //}                    
+                }
+
+                public int[] player(int x){
+                    // int x=5684;
+                    b[0] = x / 1000;
+                    b[1] = (x % 1000) / 100;
+                    b[2] = (x % 1000 % 100) / 10;
+                    b[3] = x % 1000 % 100 % 10;
+                    System.out.println("\n입력한 수: " + b[0] + b[1] + b[2] + b[3]);
+                    return b;
+                }
+
+                public void compare(){
+
+                    int correctN = 0;
+                    int result = 0;
+                    for (int i = 0; i <= 3; i++) {
+                        for (int j = 0; j <= 3; j++) {
+                            if (a[i] == b[j]) {
+                                correctN++;
+                                //System.out.println("맞는 숫자 개수" + correctN);
+                            }
+                        }
+                    }
+                    c[0] = correctN;
+                    for (int i = 0; i <= 3; i++) {
+                        if (a[i] == b[i]) {
+                            result++;
+                            //System.out.println("스트라이크 개수" + result);
+                        }
+                    }
+                    c[1] = result;
+                }
+
+
+    public NEW() {
+        System.out.println("Do you want to play the baseball??");
+        
+
+        System.out.println("시스템이 숫자를 선택하는 중입니다....");
+        computer();
+        System.out.println("임의의 숫자가 결정됐습니다.");
+
+        while (true) {
+            try {
+
+                System.out.print("\n[" + score + "회차] 0~9 중 숫자를 골라 네자리를 입력해주세요\n※중복된 수를 입력하시면 SCORE에 불리합니다※ \n>>");
+                int run = sc.nextInt();
+
+                int l = (int) (Math.log10(run) + 1);
+
+                if (l == 4) {
+
+                    player(run);
+                    compare();
+                    strike = c[1];
+                    int ball = c[0] - c[1];
+                    int out = 4 - ball - strike;
+
+                    System.out.println("strike " + strike + ", ball " + ball + ", out " + out + "\n");
+                    score++;
+
+                    if (strike == 4) {
+                        int pscore = score - 1;
+                        System.out.println("YOU WIN!! SCORE: " + pscore);
+                        break;
+                    }}
+                   else {
+                        System.out.println("\nFOUL! 네자리 수만 입력 가능합니다. (공백x)");
+                        sc.nextLine();
+                    }
+
+
+            } catch(InputMismatchException e) {
+                System.out.println("\n올바른 입력이 아닙니다.");
+                sc.nextLine();
+            }}//while
+            }//NEW
+
+                public static void main (String arg []) {
+                	while(true){
+                new NEW();
+                score=1;
+                        System.out.print("아무 키나 입력하시면 게임이 다시 시작됩니다.\n게임을 종료하려면 n을 입력해주세요 >>");
+                        Scanner scn =new Scanner(System.in);
+                        String re = scn.nextLine();
+                        if (re.equals("n")){
+                        	System.out.println("게임이 종료됩니다...");break;}
+                        else {
+                              System.out.println("SCORE가 초기화 됩니다....\n");
+                        }
+                    } 
+            }
+            }//클래스
